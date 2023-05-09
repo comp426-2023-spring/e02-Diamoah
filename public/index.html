@@ -1,10 +1,63 @@
 <html>
     <head>
         <title>Rock</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="./styles.css" rel="stylesheet">
+		<script src="./scripts.js"></script>
         <!-- Link to your script file(s) and CSS in here somewhere -->
     </head>
     <body>
-
+        <div>
+            RPS + RPSLS:
+            <br>
+            Rock, Paper, Scissors, Shoot
+        </div>
+        <br><br>
+        <form id="decision" onsubmit="firstsubmit(event)">
+            Make a Choice
+            <br><br>
+            <input type="radio" id="rps" name="game" value="rps" checked onclick="playingrps()">
+			<label for="rps">Play rock, paper, scissors</label>
+			<br><br>
+			<input type="radio" id="rpsls" name="game" value="rpsls" onclick="playingrpsls()">
+			<label for="rpsls">Play rock, paper, scissors, lizard, spock</label>
+			<br><br>
+            Do you want an opponent?
+            <br><br>
+            <input type="checkbox" id="opponent" name="co-op" value="opponent" onclick="playingopponent()">
+            <label for="opponent">Play against an opponent</label>
+            <br><br>
+            <button type="submit" id="sub-one">Submit</button>
+            <br><br>
+        </form>
+        <form id="rps-input" onsubmit="secondsubmit(event)" hidden>
+            <input type="radio" id="rock" name="shot" value="rock" class="rps shots" checked onclick="playgamefromrpsorrpsls(0)">
+            <label class="shots rps">Rock</label>
+			<input type="radio" id="paper" name="shot" value="paper" class="rps shots" onclick="playgamefromrpsorrpsls(1)">
+			<label class="shots rps">Paper</label>
+			<input type="radio" id="scissors" name="shot" value="scissors" class="rps shots" onclick="playgamefromrpsorrpsls(2)">
+			<label class="shots rps">Scissors</label>
+			<input type="radio" id="lizard" name="shot" value="lizard" class="rpsls shots" onclick="playgamefromrpsorrpsls(3)">
+			<label id="lizard-label">Lizard</label>
+			<input type="radio" id="spock" name="shot" value="spock" class="rpsls shots" onclick="playgamefromrpsorrpsls(4)">
+			<label id="spock-label">Spock</label>
+            <br><br>
+            <button type="submit" id="sub-two">Submit</button>
+        </form>
+        <div id="results" hidden></div>
+        <br><br>
+        <div>
+            <button type="button" id="startover" onclick="startOver()">Start Over</button>
+            <br><br>
+            <form id="rules-form" onsubmit="viewrules(event)">
+                <button type="submit" id="rules-button">View Rules</button>
+                <br><br>
+                <div id="rules" hidden></div>
+                <br><br>
+                <button type="button" id="hide-rules-button" onclick="hiderules()" hidden>Hide Rules</button>
+            </form>
+        </div>
     <!-- Your interface markup goes here -->
     <!-- For interface examples, look in the `/examples/` directory in the root of your starter code repo. -->
 

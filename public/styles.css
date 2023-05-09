@@ -1,8 +1,12 @@
 body {
+    background-color: #d2b48c;
+    font-family: 'Arial Rounded MT Bold', Helvetica, sans-serif;
 }
 
-h1 {
+h1 { 
+    color: whitesmoke;
 }
 
 p {
+    color: #f0e68c;
 }
