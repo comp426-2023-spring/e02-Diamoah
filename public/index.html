@@ -1,68 +1,59 @@
-<html>
-    <head>
-        <title>Rock</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="./styles.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-		<script src="./scripts.js"></script>
-        <!-- Link to your script file(s) and CSS in here somewhere -->
-    </head>
-    <body>
-        <div>
-            RPS + RPSLS:
-            <br>
-            Rock, Paper, Scissors, Shoot
-        </div>
-        <br><br>
-        <form id="decision" onsubmit="firstsubmit(event)">
-            Make a Choice
-            <br><br>
-            <input type="radio" id="rps" name="game" value="rps" checked onclick="playingrps()">
-			<label for="rps">Play rock, paper, scissors</label>
-			<br><br>
-			<input type="radio" id="rpsls" name="game" value="rpsls" onclick="playingrpsls()">
-			<label for="rpsls">Play rock, paper, scissors, lizard, spock</label>
-			<br><br>
-            Do you want an opponent?
-            <br><br>
-            <input type="checkbox" id="opponent" name="co-op" value="opponent" onclick="playingopponent()">
-            <label for="opponent">Play against an opponent</label>
-            <br><br>
-            <button type="submit" id="sub-one">Submit</button>
-            <br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors and Rock-Paper-Scissors-Lizard-Spock</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script defer src="./scripts.js"></script>
+</head>
+<body>
+    <div id="main-container">
+        <h1>Rock-Paper-Scissors and Rock-Paper-Scissors-Lizard-Spock</h1>
+        <form id="game-selection">
+            <div class="form-group">
+                <label for="game-type">Select game type:</label>
+                <select id="game-type" name="game-type">
+                    <option value="rps">Rock-Paper-Scissors</option>
+                    <option value="rpsls">Rock-Paper-Scissors-Lizard-Spock</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="opponent-type">Select opponent type:</label>
+                <select id="opponent-type" name="opponent-type">
+                    <option value="computer">Computer</option>
+                    <option value="player">Player</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" id="start-game">Start Game</button>
+            </div>
         </form>
-        <form id="rps-input" onsubmit="secondsubmit(event)" hidden>
-            <input type="radio" id="rock" name="shot" value="rock" class="rps shots" checked onclick="playgamefromrpsorrpsls(0)">
-            <label class="shots rps">Rock</label>
-			<input type="radio" id="paper" name="shot" value="paper" class="rps shots" onclick="playgamefromrpsorrpsls(1)">
-			<label class="shots rps">Paper</label>
-			<input type="radio" id="scissors" name="shot" value="scissors" class="rps shots" onclick="playgamefromrpsorrpsls(2)">
-			<label class="shots rps">Scissors</label>
-			<input type="radio" id="lizard" name="shot" value="lizard" class="rpsls shots" onclick="playgamefromrpsorrpsls(3)">
-			<label id="lizard-label">Lizard</label>
-			<input type="radio" id="spock" name="shot" value="spock" class="rpsls shots" onclick="playgamefromrpsorrpsls(4)">
-			<label id="spock-label">Spock</label>
-            <br><br>
-            <button type="submit" id="sub-two">Submit</button>
-        </form>
-        <div id="results" hidden></div>
-        <br><br>
-        <div>
-            <button type="button" id="startover" onclick="startOver()">Start Over</button>
-            <br><br>
-            <form id="rules-form" onsubmit="viewrules(event)">
-                <button type="submit" id="rules-button">View Rules</button>
-                <br><br>
-                <div id="rules" hidden></div>
-                <br><br>
-                <button type="button" id="hide-rules-button" onclick="hiderules()" hidden>Hide Rules</button>
+        <div id="game-container" hidden>
+            <form id="player1-form">
+                <h2>Player 1</h2>
+                <div class="form-group move-selection"></div>
+                <div class="form-group">
+                    <button type="button" id="player1-submit">Submit</button>
+                </div>
             </form>
+            <form id="player2-form" hidden>
+                <h2>Player 2</h2>
+                <div class="form-group move-selection"></div>
+                <div class="form-group">
+                    <button type="button" id="player2-submit">Submit</button>
+                </div>
+            </form>
+            <div id="results" hidden></div>
+            <div class="form-group">
+                <button type="button" id="reset">Reset</button>
+            </div>
         </div>
-    <!-- Your interface markup goes here -->
-    <!-- For interface examples, look in the `/examples/` directory in the root of your starter code repo. -->
-
-    </body>
+        <div id="rules-container">
+            <button type="button" id="show-rules">Show Rules</button>
+            <div id="rules" hidden></div>
+            <button type="button" id="hide-rules" hidden>Hide Rules</button>
+        </div>
+    </div>
+</body>
 </html>

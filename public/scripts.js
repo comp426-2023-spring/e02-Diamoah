@@ -1,124 +1,145 @@
 // If you would like to see some examples of similar code to make an interface interact with an API, 
 // check out the coin-server example from a previous COMP 426 semester.
 // https://github.com/jdmar3/coinserver
-var opponent = false;
-const moves = ["rock", "paper", "scissors", "lizard", "spock"];
-var rps = true;
-var move = "rock";
-var rps_endpoint = "/app/rps/play/";
-var rpsls_endpoint = "/app/rpsls/play/";
- 
-function playgamefromrpsorrpsls(index) {
-    move = moves[index];
+document.getElementById("start-game").addEventListener("click", startGame);
+document.getElementById("player1-submit").addEventListener("click", player1Submit);
+document.getElementById("player2-submit").addEventListener("click", player2Submit);
+document.getElementById("reset").addEventListener("click", resetGame);
+document.getElementById("show-rules").addEventListener("click", showRules);
+document.getElementById("hide-rules").addEventListener("click", hideRules);
+
+let gameType = "rps";
+let opponentType = "computer";
+let player1Move = "";
+let player2Move = "";
+
+function startGame() {
+    gameType = document.getElementById("game-type").value;
+    opponentType = document.getElementById("opponent-type").value;
+
+    document.getElementById("game-selection").hidden = true;
+    document.getElementById("game-container").hidden = false;
+
+    generateMoveOptions("player1-form");
 }
 
-function firstsubmit(event) {
-    event.preventDefault();
-    document.getElementById("decision").hidden = true;
-    document.getElementById("rps-input").hidden = false;
+function player1Submit() {
+    player1Move = document.querySelector("#player1-form input[type='radio']:checked").value;
 
-    if (rps) {
-        document.getElementById("lizard-label").hidden = true;
-        document.getElementById("spock-label").hidden = true;
-        document.getElementById("lizard").hidden = true;
-        document.getElementById("spock").hidden = true;
+    if (opponentType === "computer") {
+        playAgainstComputer();
     } else {
-        document.getElementById("lizard-label").hidden = false;
-        document.getElementById("spock-label").hidden = false;
-        document.getElementById("lizard").hidden = false;
-        document.getElementById("spock").hidden = false;
+        document.getElementById("player1-form").hidden = true;
+        document.getElementById("player2-form").hidden = false;
+        generateMoveOptions("player2-form");
     }
 }
 
-function secondsubmit(event) {
-    event.preventDefault();
-    document.getElementById("lizard-label").hidden = false;
-    document.getElementById("spock-label").hidden = false;
-    document.getElementById("lizard").hidden = false;
-    document.getElementById("spock").hidden = false;
-    document.getElementById("rps-input").hidden = true;
+function player2Submit() {
+    player2Move = document.querySelector("#player2-form input[type='radio']:checked").value;
+    playAgainstPlayer();
+}
 
-    var random_move = rps ? Math.floor(Math.random() * 3) : Math.floor(Math.random() * 5);
-    random_move = moves[random_move];
+function playAgainstComputer() {
+    player2Move = getRandomMove();
+    displayResults();
+}
 
-    var result_text = "You chose " + move + ". The computer chose " + random_move + ". ";
-    var result = getResult(move, random_move);
-    result_text += result;
-    document.getElementById("results").innerText = result_text;
+function playAgainstPlayer() {
+    displayResults();
+}
+
+function generateMoveOptions(formId) {
+    const moveOptions = gameType === "rps" ? ["rock", "paper", "scissors"] : ["rock", "paper", "scissors", "lizard", "spock"];
+    const moveSelection = document.querySelector("#" + formId + " .move-selection");
+
+    moveSelection.innerHTML = moveOptions
+        .map((move, index) => `<input type="radio" id="${move}-${formId}" name="move" value="${move}" ${index === 0 ? "checked" : ""}><label for="${move}-${formId}">${move}</label>`)
+        .join("");
+}
+
+function getRandomMove() {
+    const moves = gameType === "rps" ? ["rock", "paper", "scissors"] : ["rock", "paper", "scissors", "lizard", "spock"];
+    return moves[Math.floor(Math.random() * moves.length)];
+}
+
+function displayResults() {
+    const winner = getWinner(player1Move, player2Move);
+
+    let result = `Player 1 chose ${player1Move}.<br>`;
+
+    if (opponentType === "computer") {
+        result += `Computer chose ${player2Move}.<br>`;
+    } else {
+        result += `Player 2 chose ${player2Move}.<br>`;
+    }
+
+    switch (winner) {
+        case 0:
+            result += "It's a tie!";
+            break;
+        case 1:
+            result += "Player 1 wins!";
+            break;
+        case 2:
+            result += opponentType === "computer" ? "Computer wins!" : "Player 2 wins!";
+            break;
+    }
+
+    document.getElementById("results").innerHTML = result;
     document.getElementById("results").hidden = false;
 }
 
-function getResult(player_move, computer_move) {
-    var results = {
-        rock: { rock: 'Draw', paper: 'You lose', scissors: 'You win', lizard: 'You win', spock: 'You lose' },
-        paper: { rock: 'You win', paper: 'Draw', scissors: 'You lose', lizard: 'You lose', spock: 'You win' },
-        scissors: { rock: 'You lose', paper: 'You win', scissors: 'Draw', lizard: 'You win', spock: 'You lose' },
-        lizard: { rock: 'You lose', paper: 'You win', scissors: 'You lose', lizard: 'Draw', spock: 'You win' },
-        spock: { rock: 'You win', paper: 'You lose', scissors: 'You win', lizard: 'You lose', spock: 'Draw' },
-    };
+function getWinner(move1, move2) {
+    if (move1 === move2) {
+        return 0;
+    }
 
-    return results[player_move][computer_move];
+    const moves = gameType === "rps" ? ["rock", "paper", "scissors"] : ["rock", "paper", "scissors", "lizard", "spock"];
+    const index1 = moves.indexOf(move1);
+    const index2 = moves.indexOf(move2);
+    const rpslsMatrix = [
+        [0, 1, 2, 2, 1],
+        [2, 0, 1, 1, 2],
+        [1, 2, 0, 2, 1],
+        [1, 2, 1, 0, 2],
+        [2, 1, 2, 1, 0]
+    ];
+
+    return rpslsMatrix[index1][index2] === 1 ? 1 : 2;
 }
 
-
-
-
-function playingrps() {
-    rps = true;
-}
-
-function playingrpsls() {
-    rps = false;
-}
-
-
-function playingopponent() {
-    opponent = !opponent;
-}
-
-
-function viewrules(event) {
-    event.preventDefault();
-    document.getElementById("rules").innerText =
-    `Rules for Rock Paper Scissors:
-
-    - Scissors CUTS Paper
-    - Paper COVERS Rock
-    - Rock CRUSHES Scissors
-    
-    Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
-
-    - Scissors CUTS Paper
-    - Paper COVERS Rock
-    - Rock SMOOSHES Lizard
-    - Lizard POISONS Spock
-    - Spock SMASHES Scissors
-    - Scissors DECAPITATES Lizard
-    - Lizard EATS Paper
-    - Paper DISPROVES Spock
-    - Spock VAPORIZES Rock
-    - Rock CRUSHES Scissors`;
-    document.getElementById("rules-button").hidden = true;
-    document.getElementById("rules").hidden = false;
-    document.getElementById("hide-rules-button").hidden = false;
-}
-
-function hiderules() {
-    
-    document.getElementById("rules").hidden = true;
-    document.getElementById("hide-rules-button").hidden = true;
-    document.getElementById("rules-button").hidden = false;
-}
-
-function startOver() {
-    rps = true;
-    opponent = false;
-    move = "rock";
-    document.getElementById("rules-form").reset();
-    document.getElementById("results").innerHTML = "";
-    document.getElementById("rps-input").reset();
-    document.getElementById("decision").reset();
+function resetGame() {
+    document.getElementById("game-selection").hidden = false;
+    document.getElementById("game-container").hidden = true;
     document.getElementById("results").hidden = true;
-    document.getElementById("rps-input").hidden = true;
-    document.getElementById("decision").hidden = false;
+    document.getElementById("player1-form").hidden = false;
+    document.getElementById("player2-form").hidden = true;
+}
+
+function showRules() {
+    document.getElementById("rules").innerHTML = `Rules for Rock-Paper-Scissors:<br>
+    - Rock crushes Scissors<br>
+    - Scissors cuts Paper<br>
+    - Paper covers Rock<br><br>
+    Rules for Rock-Paper-Scissors-Lizard-Spock:<br>
+    - Rock crushes Scissors<br>
+    - Scissors cuts Paper<br>
+    - Paper covers Rock<br>
+    - Rock crushes Lizard<br>
+    - Lizard poisons Spock<br>
+    - Spock smashes Scissors<br>
+    - Scissors decapitates Lizard<br>
+    - Lizard eats Paper<br>
+    - Paper disproves Spock<br>
+    - Spock vaporizes Rock`;
+    document.getElementById("rules").hidden = false;
+    document.getElementById("show-rules").hidden = true;
+    document.getElementById("hide-rules").hidden = false;
+}
+
+function hideRules() {
+    document.getElementById("rules").hidden = true;
+    document.getElementById("show-rules").hidden = false;
+    document.getElementById("hide-rules").hidden = true;
 }

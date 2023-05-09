@@ -1,31 +1,71 @@
 body {
-    background-color: #000000;
-    font-family: 'Press Start 2P', cursive;
-    color: #f0e68c;
+    background-color: #004d40;
+    font-family: 'Arial Rounded MT Bold', Helvetica, sans-serif;
+    color: #ffffff;
 }
 
-h1 { 
-    color: #f0e68c;
+h1 {
     text-align: center;
+    padding: 20px 0;
 }
 
-p {
-    color: #f0e68c;
+#main-container {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-input[type="radio"], input[type="checkbox"] {
-    background-color: #f0e68c;
-    border-color: #f0e68c;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+label {
+    margin-bottom: 10px;
+}
+
+.move-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.move-selection input[type="radio"] {
+    display: none;
+}
+
+.move-selection label {
+    background-color: #00796b;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.move-selection label:hover {
+    background-color: #009688;
 }
 
 button {
-    background-color: #f0e68c;
-    border-color: #f0e68c;
-    color: #000000;
+    background-color: #00796b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 button:hover {
-    background-color: #f0e6b0;
-    border-color: #f0e6b0;
+    background-color: #009688;
 }
