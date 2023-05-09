@@ -14,43 +14,21 @@ function playgamefromrpsorrpsls(index) {
 
 function firstsubmit(event) {
     event.preventDefault();
-    if (opponent) {
-        
-        document.getElementById("decision").hidden = true;
-        document.getElementById("rps-input").hidden = false;
-        if (rps) {
-            document.getElementById("lizard-label").hidden = true;
-            document.getElementById("spock-label").hidden = true;
-            document.getElementById("lizard").hidden = true;
-            document.getElementById("spock").hidden = true;    
-        }
-        
+    document.getElementById("decision").hidden = true;
+    document.getElementById("rps-input").hidden = false;
 
-    } else { 
-        
-        if (rps) { 
-            var random_move = Math.floor(Math.random() * 3);
-            random_move = moves[random_move];
-            var api_call = rps_endpoint + random_move;
-            fetch(api_call).then(response => response.json()).then(data => {
-                document.getElementById("results").innerText = JSON.stringify(data);
-                document.getElementById("decision").hidden = true;
-                document.getElementById("results").hidden = false;
-            });
-        } else {
-            
-            var random_move = Math.floor(Math.random() * 5);
-            random_move = moves[random_move];
-            var api_call = rpsls_endpoint + random_move;
-            fetch(api_call).then(response => response.json()).then(data => {
-                document.getElementById("results").innerText = JSON.stringify(data);
-                document.getElementById("decision").hidden = true;
-                document.getElementById("results").hidden = false;
-            });
-        }       
+    if (rps) {
+        document.getElementById("lizard-label").hidden = true;
+        document.getElementById("spock-label").hidden = true;
+        document.getElementById("lizard").hidden = true;
+        document.getElementById("spock").hidden = true;
+    } else {
+        document.getElementById("lizard-label").hidden = false;
+        document.getElementById("spock-label").hidden = false;
+        document.getElementById("lizard").hidden = false;
+        document.getElementById("spock").hidden = false;
     }
 }
-
 
 function secondsubmit(event) {
     event.preventDefault();
@@ -60,22 +38,28 @@ function secondsubmit(event) {
     document.getElementById("spock").hidden = false;
     document.getElementById("rps-input").hidden = true;
 
-    if (rps) {
-        var api_call = rps_endpoint + move;
-        fetch(api_call).then(response => response.json()).then(data => {
-            document.getElementById("results").innerText = JSON.stringify(data);
-            document.getElementById("decision").hidden = true;
-            document.getElementById("results").hidden = false;
-        });
-    } else {
-        var api_call = rpsls_endpoint + move;
-        fetch(api_call).then(response => response.json()).then(data => {
-            document.getElementById("results").innerText = JSON.stringify(data);
-            document.getElementById("decision").hidden = true;
-            document.getElementById("results").hidden = false;
-        });
-    }  
+    var random_move = rps ? Math.floor(Math.random() * 3) : Math.floor(Math.random() * 5);
+    random_move = moves[random_move];
+
+    var result_text = "You chose " + move + ". The computer chose " + random_move + ". ";
+    var result = getResult(move, random_move);
+    result_text += result;
+    document.getElementById("results").innerText = result_text;
+    document.getElementById("results").hidden = false;
 }
+
+function getResult(player_move, computer_move) {
+    var results = {
+        rock: { rock: 'Draw', paper: 'You lose', scissors: 'You win', lizard: 'You win', spock: 'You lose' },
+        paper: { rock: 'You win', paper: 'Draw', scissors: 'You lose', lizard: 'You lose', spock: 'You win' },
+        scissors: { rock: 'You lose', paper: 'You win', scissors: 'Draw', lizard: 'You win', spock: 'You lose' },
+        lizard: { rock: 'You lose', paper: 'You win', scissors: 'You lose', lizard: 'Draw', spock: 'You win' },
+        spock: { rock: 'You win', paper: 'You lose', scissors: 'You win', lizard: 'You lose', spock: 'Draw' },
+    };
+
+    return results[player_move][computer_move];
+}
+
 
 
 
